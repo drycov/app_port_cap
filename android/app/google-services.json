@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "649507476750",
+    "firebase_url": "https://port-capacity-default-rtdb.firebaseio.com",
+    "project_id": "port-capacity",
+    "storage_bucket": "port-capacity.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:649507476750:android:3533b4111d9dc2064a335f",
+        "android_client_info": {
+          "package_name": "kz.oritorius.appPortCap"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "649507476750-es4fmbak4672l7qh9m17hr0mgpkdshaj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwAMlisKWrUck89e4be7ExHlbqsxWqMcw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "649507476750-es4fmbak4672l7qh9m17hr0mgpkdshaj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "649507476750-s1fs4ov2t9plgj16s4uphkvhkv9hlbpa.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.appPortCap"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
