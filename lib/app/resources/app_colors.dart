@@ -29,7 +29,7 @@ class GlobalColors {
 }
 
 class TTCCorpColors {
-  static const Salem = Color(0xff0E863C);
+  static const Salem = Color(0xff50B748);
   static const ForestGreen = Color(0xff1E9C47);
   static const Apple = Color(0xff48A944);
   static const Lima = Color(0xff7EB41A);
@@ -42,6 +42,7 @@ class TTCCorpColors {
   static const Peppermint = Color(0xFFDAF3D8);
   static const Transparent = Color(0x00000000);
   static const White = Color(0xFFFFFFFF);
+  static const Gray = Color.fromARGB(255, 235, 235, 235);
   static const Black = Color(0xFF000000);
   static const Red = Color(0xFFF44236);
 }

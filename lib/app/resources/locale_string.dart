@@ -7,6 +7,7 @@ class LocaleString extends Translations {
         //ENGLISH LANGUAGE
         'en': {
 // lang
+          'base.app.title': 'Network Capacity',
           'lang.localeCode': 'en',
           'lang.localeFlag': '🇺🇸',
           'lang.localeName': 'English',
@@ -89,10 +90,12 @@ class LocaleString extends Translations {
           'msg.validator. text.notEmpty': 'This is a required field.',
           'msg.validator. text.amount':
               'Please enter a number i.e. 250 - no dollar symbol and no cents',
+          'drawer.item.label.support': 'Report an issue'
         },
 
         //RUSSIAN LANGUAGE
         'ru': {
+          'base.app.title': 'Емкость сети',
           'lang.localeCode': 'ru',
           'lang.localeFlag': '🇷🇺',
           'lang.localeName': 'Русский',
@@ -178,9 +181,11 @@ class LocaleString extends Translations {
           'msg.validator. text.notEmpty': 'Это обязательное поле.',
           'msg.validator. текст.сумма':
               "Пожалуйста, введите число, например 250 - без символа доллара и без центов",
+          'drawer.item.label.support': 'Сообщить о проблеме'
         },
         //KAZAKH LANGUAGE
         'kz': {
+          'base.app.title': 'Желі сыйымдылығы',
           'lang.localeCode': 'kz',
           'lang.localeFlag': '🇰🇿',
           'lang.localeName': 'Қазақ',
@@ -267,6 +272,7 @@ class LocaleString extends Translations {
           'msg.validator. text.notEmpty': 'Бұл міндетті өріс.',
           'msg.validator. text.amount':
               'Санды енгізіңіз, яғни 250 - доллар белгісі және цент жоқ',
+          'drawer.item.label.support': 'Мәселе туралы хабарлау'
         },
       };
 

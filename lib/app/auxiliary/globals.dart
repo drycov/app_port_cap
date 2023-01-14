@@ -4,7 +4,9 @@ import 'dart:io';
 
 import 'package:app_port_cap/app/models/index.dart';
 import 'package:app_port_cap/app/resources/resources.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -55,7 +57,7 @@ class Globals {
     },
   ];
 
-  Future<String> getDeviceId() async {
+  static Future<String> getDeviceId() async {
     var deviceInfo = DeviceInfoPlugin();
     late String deviceId;
 
@@ -72,6 +74,15 @@ class Globals {
 
   static void printMet(dynamic msg) {
     print('debug: $msg');
+  }
+
+  Future<void> saveTokenToDatabase(String token) async {
+    // Assume user is logged in for this example
+    String userId = FirebaseAuth.instance.currentUser!.uid;
+
+    await FirebaseFirestore.instance.collection('users').doc(userId).update({
+      'tokens': FieldValue.arrayUnion([token]),
+    });
   }
 
   static void buildLanguageDialog(BuildContext context) {

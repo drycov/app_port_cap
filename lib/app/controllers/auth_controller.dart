@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:app_port_cap/app/auxiliary/auxiliary.dart';
 import 'package:app_port_cap/app/models/index.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -28,6 +29,7 @@ class AuthController extends GetxController {
       // Globals.printMet(credential);
       if (credential.user?.uid != null) {
         String? email = credential.user?.email;
+        String deviceId = await Globals.getDeviceId();
         var UserAsMap = UserModel(
                 uid: credential.user?.uid,
                 name: email.toString().replaceAll(RegExp('@(\\w+.+)'), ""),
@@ -38,7 +40,7 @@ class AuthController extends GetxController {
                 middleName: ' ',
                 email: email,
                 fileName: ' ',
-                devID: ' ',
+                devID: deviceId.toString(),
                 photoUrl: ' ')
             .toJson();
         String jsonString = jsonEncode(UserAsMap);
@@ -47,6 +49,9 @@ class AuthController extends GetxController {
         } else {
           datastore.write('user', jsonString);
         }
+        datastore.write('isAuthenticated', true);
+        setupToken();
+
         Globals.printMet(datastore.read('user'));
         emailController.clear();
         passwordController.clear();
@@ -72,7 +77,19 @@ class AuthController extends GetxController {
     emailController.clear();
     passwordController.clear();
     datastore.remove('user');
+    datastore.write('isAuthenticated', false);
     Get.offNamed('/');
     return _auth.signOut();
+  }
+
+  Future<void> setupToken() async {
+    // Get the token each time the application loads
+    String? token = await FirebaseMessaging.instance.getToken();
+    Globals.printMet('FCM token: ${token!}');
+    await Globals().saveTokenToDatabase(token);
+    // Save the initial token to the database
+    // Any time the token refreshes, store this in the database too.
+    FirebaseMessaging.instance.onTokenRefresh
+        .listen(Globals().saveTokenToDatabase);
   }
 }

@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert'; // For jsonDecode
 
 import 'package:app_port_cap/app/controllers/index.dart';
@@ -8,6 +10,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // For rootBundle
@@ -33,6 +36,8 @@ Future<void> main() async {
   await FirebaseAppCheck.instance.activate(
     webRecaptchaSiteKey: 'recaptcha-v3-site-key',
   );
+  await NotificationApi().init();
+
   PlatformDispatcher.instance.onError = (error, stack) {
     FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
     return true;
@@ -40,11 +45,13 @@ Future<void> main() async {
 
   await GetStorage.init();
   await init();
-
+  await writeDeviceId();
   final themeStr =
       await rootBundle.loadString('assets/themes/appainter_theme.json');
   final themeJson = jsonDecode(themeStr);
   final theme = ThemeDecoder.decodeThemeData(themeJson)!;
+  FirebaseMessaging.onBackgroundMessage(_messageHandler);
+
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]).then((_) {
@@ -52,7 +59,9 @@ Future<void> main() async {
   });
 }
 
-Future<void> firebaseInit() async {}
+Future<void> _messageHandler(RemoteMessage message) async {
+  print('background message ${message.notification!.body}');
+}
 
 Future<void> init() async {
   // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
@@ -66,16 +75,14 @@ Future<void> init() async {
   // Get.put<ThemeController>(ThemeController());
 }
 
-String getLocaleInDS() {
+Future<void> writeDeviceId() async {
   final datastore = GetStorage();
-  String lang = 'en';
-
-  if (datastore.read('locale') != null) {
-    lang = datastore.read('locale');
+  String devId = Globals.getDeviceId().toString();
+  if (datastore.read('deviceId') != null) {
+    devId = datastore.read('deviceId');
   } else {
-    datastore.write("locale", lang);
+    datastore.write("deviceId", devId);
   }
-  return lang;
 }
 
 class MyApp extends StatelessWidget {
@@ -96,12 +103,9 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             translations: LocaleString(),
             locale: languageController.getLocale,
-
-            // translations: LocaleString(),
-            // locale: Locale(getLocaleInDS()),
             navigatorObservers: [observer],
             defaultTransition: Transition.fade,
-            title: 'Kindacode.com',
+            title: 'TTC Network Capacity',
             theme: theme,
             unknownRoute: GetPage(name: '/', page: () => const SplashUI()),
             initialRoute: "/",

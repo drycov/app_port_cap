@@ -11,12 +11,12 @@ class AppRoutes {
     GetPage(name: '/home', page: () => const HomeUi()),
     GetPage(name: '/settings', page: () => const SettingsPage()),
     // GetPage(name: '/reset-password', page: () => ResetPasswordUI()),
-    // GetPage(name: '/update-profile', page: () => UpdateProfileUI()),
+    GetPage(name: '/profile', page: () => const ProfilePage()),
     // GetPage(name: '/qrview', page: () => const UIQRView()),
     // GetPage(name: '/object', page: () => const ObjectUi()),
     // GetPage(name: '/report', page: () => const ChatScreen()),
     // GetPage(name: '/timeline', page: () => const TimelineUI()),
     // GetPage(name: '/about', page: () => const AboutUI()),
-    // GetPage(name: '/chat', page: () => const ChatsScreen()),
+    GetPage(name: '/chat', page: () => const ChatScreen()),
   ];
 }
