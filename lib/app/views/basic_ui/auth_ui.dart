@@ -177,7 +177,7 @@ class _AuthUI extends State<AuthUI> with SingleTickerProviderStateMixin {
                         children: [
                           Text(_packageInfo.appName,
                               style: const TextStyle(
-                                  color: TTCCorpColors.White, fontSize: 32.5)),
+                                  color: TTCCorpColors.White, fontSize: 30)),
                           IconButton(
                             onPressed: (() {
                               Globals.buildLanguageDialog(context);
@@ -256,7 +256,7 @@ class _AuthUI extends State<AuthUI> with SingleTickerProviderStateMixin {
 
   Widget _buildForm(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         TextFormField(
           onSaved: (value) => authController.emailController.text = value!,
@@ -293,7 +293,7 @@ class _AuthUI extends State<AuthUI> with SingleTickerProviderStateMixin {
               border: InputBorder.none,
               hintText: 'auth.password.label'.tr,
               isCollapsed: false,
-              hintStyle: const TextStyle(fontSize: 14, color: Colors.grey)),
+              hintStyle: const TextStyle(fontSize: 15, color: Colors.grey)),
         ),
       ],
     );

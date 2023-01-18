@@ -55,60 +55,62 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: buildAppBar(context, userData.name),
-      body: SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            const MessageStream(),
-            Container(
-              decoration: kMessageContainerDecoration,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Expanded(
-                    flex: 4,
-                    child: TextField(
-                      controller: messageTextController,
-                      onChanged: (value) {
-                        messageText = value;
-                      },
-                      decoration: kMessageTextFieldDecoration,
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      decoration: const BoxDecoration(
-                          color: Color(0xFFF3EFF5),
-                          border: Border(
-                              left: BorderSide(
-                                  color: TTCCorpColors.Sushi, width: 0.2))),
-                      child: FloatingActionButton(
-                        backgroundColor: Colors.white.withOpacity(0),
-                        elevation: 0,
-                        onPressed: () {
-                          messageTextController.clear();
-                          _firestore.collection('messages').add({
-                            'text': messageText,
-                            'sender': loggedInUser.email,
-                            'timestamp': FieldValue.serverTimestamp(),
-                          });
+    return SafeArea(
+      child: Scaffold(
+        appBar: buildAppBar(context, userData.name),
+        body: SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              const MessageStream(),
+              Container(
+                decoration: kMessageContainerDecoration,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Expanded(
+                      flex: 4,
+                      child: TextField(
+                        controller: messageTextController,
+                        onChanged: (value) {
+                          messageText = value;
                         },
-                        child: const Text(
-                          'Send',
-                          style: kSendButtonTextStyle,
+                        decoration: kMessageTextFieldDecoration,
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        decoration: const BoxDecoration(
+                            color: TTCCorpColors.ClearDay,
+                            border: Border(
+                                left: BorderSide(
+                                    color: TTCCorpColors.Sushi, width: 0.2))),
+                        child: FloatingActionButton(
+                          backgroundColor: Colors.white.withOpacity(0),
+                          elevation: 0,
+                          onPressed: () {
+                            messageTextController.clear();
+                            _firestore.collection('messages').add({
+                              'text': messageText,
+                              'sender': loggedInUser.email,
+                              'timestamp': FieldValue.serverTimestamp(),
+                            });
+                          },
+                          child: const Text(
+                            'Send',
+                            style: kSendButtonTextStyle,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

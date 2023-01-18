@@ -1,3 +1,12 @@
+// cn"ttc-5"
+// cn_deportament"sit"
+// company_posts"sit_3"
+// e_mail"d.rykov@ttc.kz"
+// first_name"Денис"
+// last_name"Рыков"
+// region"region-5-3"
+// uname"d.rykov"
+
 class UserModel {
   final String? uid,
       email,
@@ -7,22 +16,20 @@ class UserModel {
       firstName,
       middleName,
       lastName,
-      photoUrl,
-      fileName,
+      region,
       devID;
 
   UserModel(
-      {required this.uid,
-      required this.email,
-      required this.name,
-      required this.cn,
-      required this.post,
-      required this.firstName,
-      required this.middleName,
-      required this.lastName,
-      required this.fileName,
-      required this.photoUrl,
-      required this.devID});
+      {this.uid,
+      this.email,
+      this.name,
+      this.cn,
+      this.post,
+      this.firstName,
+      this.middleName,
+      this.lastName,
+      this.region,
+      this.devID});
 
   factory UserModel.fromMap(Map data) {
     return UserModel(
@@ -30,12 +37,11 @@ class UserModel {
       email: data['email'] ?? '',
       name: data['name'] ?? '',
       cn: data['cn'] ?? '',
+      region: data['region'] ?? '',
       post: data['post'] ?? '',
       firstName: data['firstName'] ?? '',
       middleName: data['middleName'] ?? '',
       lastName: data['lastName'] ?? '',
-      photoUrl: data['photoUrl'] ?? '',
-      fileName: data['fileName'] ?? '',
       devID: data['devID'] ?? '',
     );
   }
@@ -45,12 +51,11 @@ class UserModel {
         "email": email,
         "name": name,
         "cn": cn,
+        "region": region,
         "post": post,
         "firstName": firstName,
         "middleName": middleName,
         "lastName": lastName,
-        "photoUrl": photoUrl,
-        "fileName": fileName,
         "devID": devID
       };
 
@@ -59,12 +64,11 @@ class UserModel {
         email: json['email'],
         name: json['name'],
         cn: json['cn'],
+        region: json['region'],
         post: json['post'],
         firstName: json['firstName'],
         middleName: json['middleName'],
         lastName: json['lastName'],
-        photoUrl: json['photoUrl'],
-        fileName: json['fileName'],
         devID: json['devID'],
       );
 
@@ -73,12 +77,11 @@ class UserModel {
     String? email,
     String? name,
     String? cn,
+    String? region,
     String? post,
     String? firstName,
     String? middleName,
     String? lastName,
-    String? photoUrl,
-    String? fileName,
     String? devID,
   }) =>
       UserModel(
@@ -86,12 +89,11 @@ class UserModel {
         email: email ?? this.email,
         name: name ?? this.name,
         cn: cn ?? this.cn,
+        region: region ?? this.region,
         post: post ?? this.post,
         firstName: firstName ?? this.firstName,
         middleName: middleName ?? this.middleName,
         lastName: lastName ?? this.lastName,
-        photoUrl: photoUrl ?? this.photoUrl,
-        fileName: fileName ?? this.fileName,
         devID: devID ?? this.devID,
       );
 }

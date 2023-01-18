@@ -72,8 +72,8 @@ class Globals {
     return deviceId;
   }
 
-  static void printMet(dynamic msg) {
-    print('debug: $msg');
+  static void printMet(String? title, dynamic msg) {
+    print('$title: $msg');
   }
 
   Future<void> saveTokenToDatabase(String token) async {

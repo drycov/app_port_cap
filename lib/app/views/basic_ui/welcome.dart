@@ -43,7 +43,6 @@ class _SplashUIState extends State<SplashUI> {
   }
 
   void checkSignedIn() async {
-    // AuthProvider authProvider = context.read<AuthProvider>();
     bool isLoggedIn = await this.isLoggedIn();
     if (isLoggedIn) {
       Get.offNamed('/home');
@@ -57,46 +56,9 @@ class _SplashUIState extends State<SplashUI> {
     return Scaffold(
       body: FlameSplashScreen(
         controller: controller,
-        onFinish: (context) => {
-          // Future.delayed(const Duration(seconds: 5), () {
-          checkSignedIn()
-          // }),
-        },
-        theme: FlameSplashTheme.dark,
+        onFinish: (context) => checkSignedIn(),
+        theme: FlameSplashTheme.white,
       ),
     );
   }
-  // @override
-  // Widget build(BuildContext context) => Scaffold(
-  //       backgroundColor: GlobalColors.layerOneBg,
-  //       body: Container(
-  //         decoration: const BoxDecoration(
-  //           gradient: LinearGradient(
-  //             begin: Alignment.topRight,
-  //             end: Alignment.bottomLeft,
-  //             stops: [
-  //               0.1,
-  //               0.3,
-  //               0.5,
-  //               0.7,
-  //               0.8,
-  //             ],
-  //             colors: [
-  //               TTCCorpColors.Salem,
-  //               TTCCorpColors.ForestGreen,
-  //               TTCCorpColors.Apple,
-  //               TTCCorpColors.Lima,
-  //               TTCCorpColors.Sushi,
-  //             ],
-  //           ),
-  //         ),
-  //         child: const Align(
-  //             alignment: Alignment.center,
-  //             child: CircularProgressIndicator(
-  //               color: TTCCorpColors.Salem,
-  //               strokeWidth: 8,
-  //               backgroundColor: TTCCorpColors.MossGreen,
-  //             )),
-  //       ),
-  //     );
 }

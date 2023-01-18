@@ -1,4 +1,3 @@
-import 'package:app_port_cap/app/auxiliary/auxiliary.dart';
 import 'package:app_port_cap/app/controllers/index.dart';
 import 'package:app_port_cap/app/resources/resources.dart';
 import 'package:app_port_cap/app/widgets/index.dart';
@@ -8,7 +7,6 @@ import 'package:get/get.dart';
 PreferredSizeWidget buildAppBar(BuildContext context, String? uName,
     {bool? leadingEnable = true}) {
   String userName = uName!;
-  Globals.printMet(leadingEnable);
 
   Widget _buildPopupMenu(BuildContext context) {
     return PopupMenuButton(
@@ -55,7 +53,7 @@ PreferredSizeWidget buildAppBar(BuildContext context, String? uName,
     return AppBar(
       iconTheme: const IconThemeData(color: TTCCorpColors.White), //
       actionsIconTheme: const IconThemeData(),
-      elevation: 0,
+      // elevation: 0,
       backgroundColor: TTCCorpColors.Salem,
       actions: [_buildPopupMenu(context)],
     );
@@ -63,7 +61,7 @@ PreferredSizeWidget buildAppBar(BuildContext context, String? uName,
     return AppBar(
       iconTheme: const IconThemeData(color: TTCCorpColors.White), //
       actionsIconTheme: const IconThemeData(),
-      elevation: 0,
+      // elevation: 0,
       leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_outlined),
           onPressed: () {

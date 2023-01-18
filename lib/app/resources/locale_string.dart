@@ -66,6 +66,25 @@ class LocaleString extends Translations {
           'object.title.port': 'Ports',
           'object.title.timeline': 'Timeline',
 
+//home menu
+
+          'home.menu.title.networkStructure': 'Network structure',
+          'home.menu.subtitle.networkStructure': 'Network structure on site',
+
+          'home.menu.title.lineStructure': 'Line structure',
+          'home.menu.subtitle.lineStructure': 'Line structure on site',
+
+          'home.menu.title.location': 'Locations',
+          'home.menu.subtitle.location': 'Location devices on map',
+
+          'home.menu.title.documents': 'Documents',
+          'home.menu.subtitle.documents': 'Documents on devices',
+
+          'home.menu.title.portCapacity': 'Port Capacity',
+          'home.menu.subtitle.portCapacity': '',
+
+          'home.menu.title.employers': 'Employers',
+          'home.menu.subtitle.employers': '',
 // messages
           'msg.info.message': 'Welcome to ',
           'msg.info.logging': '  Logging In...',
@@ -75,6 +94,11 @@ class LocaleString extends Translations {
           'msg.info.privacy': 'Privacy Policy',
           'msg.error.unknown': 'Unknown Error',
 
+          'msg.error.text.nouser': 'No user found for that email.',
+          'msg.error.text.noInternet': 'No internet connection',
+          'msg.error.text.wrongpassword':
+              'Wrong password provided for that user.',
+
           'msg.error.title.signUp': 'Sign Up Failed.',
           'msg.error.text.signUp':
               'There was a problem signing up.  Please try again later.',
@@ -82,13 +106,13 @@ class LocaleString extends Translations {
           'msg.error.text.signIn': 'Email or password incorrect.',
           'msg.error.emailInUse': 'That email address already has an account.',
           'msg.error.updateFail': 'Failed to update user',
-          'msg.validator. text.email': 'Please enter a valid email address.',
-          'msg.validator. text.password':
+          'msg.validator.text.email': 'Please enter a valid email address.',
+          'msg.validator.text.password':
               'Password must be at least 6 characters.',
-          'msg.validator. text.name': 'Please enter a name.',
-          'msg.validator. text.number': 'Please enter a number.',
-          'msg.validator. text.notEmpty': 'This is a required field.',
-          'msg.validator. text.amount':
+          'msg.validator.text.name': 'Please enter a name.',
+          'msg.validator.text.number': 'Please enter a number.',
+          'msg.validator.text.notEmpty': 'This is a required field.',
+          'msg.validator.text.amount':
               'Please enter a number i.e. 250 - no dollar symbol and no cents',
           'drawer.item.label.support': 'Report an issue'
         },
@@ -153,7 +177,25 @@ class LocaleString extends Translations {
           'object.title.vlan': 'VLAN',
           'object.title.port': 'Порты',
           'object.title.timeline': 'Временная шкала',
+// home menu
 
+          'home.menu.title.networkStructure': 'Структура сети',
+          'home.menu.subtitle.networkStructure': 'Структура сети на сайте',
+
+          'home.menu.title.lineStructure': 'Структура строк',
+          'home.menu.subtitle.lineStructure': 'Структура l',
+
+          'home.menu.title.location': 'Места',
+          'home.menu.subtitle.location': 'Расположение устройств на карте',
+
+          'home.menu.title.documents': 'Документы',
+          'home.menu.subtitle.documents': 'Документация устройства',
+
+          'home.menu.title.portCapacity': 'Емкость порта',
+          'home.menu.subtitle.portCapacity': '',
+
+          'home.menu.title.employers': 'Клиенты',
+          'home.menu.subtitle.employers': '',
 // Сообщения
           'msg.info.message': 'Добро пожаловать',
           'msg.info.logging': 'Вход в систему...',
@@ -162,6 +204,11 @@ class LocaleString extends Translations {
           'msg.info.and': 'и',
           'msg.info.privacy': 'Политика конфиденциальности',
           'msg.error.unknown': 'Неизвестная ошибка',
+
+          'msg.error.text.nouser': 'Пользователь с этим e-Mail не найден.',
+          'msg.error.text.noInternet': 'Нет подключения к Интернету',
+          'msg.error.text.wrongpassword':
+              'Для этого пользователя указан неверный пароль.',
 
           'msg.error.title.signUp': 'Ошибка регистрации.',
           'msg.error.text.signUp':
@@ -172,13 +219,13 @@ class LocaleString extends Translations {
           'msg.error.emailInUse':
               'У этого адреса электронной почты уже есть учетная запись.',
           'msg.error.updateFail': 'Не удалось обновить пользователя',
-          'msg.validator. text.email':
+          'msg.validator.text.email':
               'Пожалуйста, введите действительный адрес электронной почты.',
-          'msg.validator. text.password':
+          'msg.validator.text.password':
               'Пароль должен содержать не менее 6 символов.',
-          'msg.validator. text.name': 'Пожалуйста, введите имя.',
-          'msg.validator. text.number': 'Пожалуйста, введите число.',
-          'msg.validator. text.notEmpty': 'Это обязательное поле.',
+          'msg.validator.text.name': 'Пожалуйста, введите имя.',
+          'msg.validator.text.number': 'Пожалуйста, введите число.',
+          'msg.validator.text.notEmpty': 'Это обязательное поле.',
           'msg.validator. текст.сумма':
               "Пожалуйста, введите число, например 250 - без символа доллара и без центов",
           'drawer.item.label.support': 'Сообщить о проблеме'
@@ -244,7 +291,25 @@ class LocaleString extends Translations {
           'object.title.vlan': 'VLANs',
           'object.title.port': 'Порттар',
           'object.title.timeline': 'Уақыт шкаласы',
+//home menu
 
+          'home.menu.title.networkStructure': 'Желі құрылымы',
+          'home.menu.subtitle.networkStructure': 'Веб-сайт желісінің құрылымы',
+
+          'home.menu.title.lineStructure': 'Сызық құрылымы',
+          'home.menu.subtitle.lineStructure': 'Structure l',
+
+          'home.menu.title.location': 'Орындар',
+          'home.menu.subtitle.location': 'Картадағы құрылғылардың орналасуы',
+
+          'home.menu.title.documents': 'Құжаттар',
+          'home.menu.subtitle.documents': 'Құрылғы құжаттамасы',
+
+          'home.menu.title.portCapacity': 'Порт сыйымдылығы',
+          'home.menu.subtitle.portCapacity': '',
+
+          'home.menu.title.employers': 'Клиенттер',
+          'home.menu.subtitle.employers': '',
 // хабарламалар
           'msg.info.message': 'Қош келдіңіз ',
           'msg.info.logging': ' Жүйеге кіру...',
@@ -253,6 +318,12 @@ class LocaleString extends Translations {
           'msg.info.and': ' және ',
           'msg.info.privacy': 'Құпиялылық саясаты',
           'msg.error.unknown': 'Белгісіз қате',
+
+          'msg.error.text.nouser':
+              'Осы электрондық пошта мекенжайы бар пайдаланушы табылмады.',
+          'msg.error.text.noInternet': 'Интернет байланысы жоқ',
+          'msg.error.text.wrongpassword':
+              'Бұл пайдаланушы үшін көрсетілген құпия сөз дұрыс емес',
 
           'msg.error.title.signUp': 'Тіркелу сәтсіз аяқталды.',
           'msg.error.text.signUp':
@@ -263,14 +334,14 @@ class LocaleString extends Translations {
           'msg.error.emailInUse':
               'Бұл электрондық пошта мекенжайында есептік жазба бар.',
           'msg.error.updateFail': 'Пайдаланушыны жаңарту мүмкін болмады',
-          'msg.validator. text.email':
+          'msg.validator.text.email':
               'Жарамды электрондық пошта мекенжайын енгізіңіз.',
-          'msg.validator. text.password':
+          'msg.validator.text.password':
               'Құпия сөз кемінде 6 таңбадан тұруы керек.',
-          'msg.validator. text.name': 'Атын енгізіңіз.',
-          'msg.validator. text.number': 'Нөмірді енгізіңіз.',
-          'msg.validator. text.notEmpty': 'Бұл міндетті өріс.',
-          'msg.validator. text.amount':
+          'msg.validator.text.name': 'Атын енгізіңіз.',
+          'msg.validator.text.number': 'Нөмірді енгізіңіз.',
+          'msg.validator.text.notEmpty': 'Бұл міндетті өріс.',
+          'msg.validator.text.amount':
               'Санды енгізіңіз, яғни 250 - доллар белгісі және цент жоқ',
           'drawer.item.label.support': 'Мәселе туралы хабарлау'
         },

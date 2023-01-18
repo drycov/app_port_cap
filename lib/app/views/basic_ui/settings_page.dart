@@ -25,6 +25,7 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   late final UserModel userData;
   final datastore = GetStorage();
+  bool camera = false, location = false, notification = false;
 
   TextStyle headingStyle = const TextStyle(
       fontSize: 16, fontWeight: FontWeight.w600, color: Colors.red);
@@ -48,6 +49,12 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   void initState() {
     var result = datastore.read('user');
+    // bool camera =  (Permission.camera.request().isGranted) ? true : false;
+    // bool location =
+    //     await (Permission.location.request().isGranted) ? true : false;
+    // bool notification =
+    //     await (Permission.notification.request().isGranted) ? true : false;
+
     // print(result);
     dynamic jsonData = jsonDecode(result);
     userData = UserModel.fromMap(jsonData);
@@ -58,7 +65,6 @@ class _SettingsPageState extends State<SettingsPage> {
   bool lockAppSwitchVal = true;
   bool fingerprintSwitchVal = false;
   bool changePassSwitchVal = true;
-
   TextStyle headingStyleIOS = const TextStyle(
     fontWeight: FontWeight.w600,
     fontSize: 16,
@@ -130,12 +136,14 @@ class _SettingsPageState extends State<SettingsPage> {
                 ListTile(
                   // leading: const Icon(Icons.exit_to_app),
                   title: const Text('Camera'),
+                  subtitle: camera
+                      ? const Text('Camera Permission is granted')
+                      : const Text('Camera Permission is denied'),
                   onTap: () async {
                     if (await Permission.camera.request().isGranted) {
-                      // Either the permission was already granted before or the user just granted it.
-                      print("Location Permission is granted");
+                      camera = true;
                     } else {
-                      print("Location Permission is denied.");
+                      camera = false;
                     }
                   },
                 ),
@@ -143,24 +151,28 @@ class _SettingsPageState extends State<SettingsPage> {
                 ListTile(
                   // leading: const Icon(Icons.exit_to_app),
                   title: const Text('Location'),
+                  subtitle: location
+                      ? const Text('Location Permission is granted')
+                      : const Text('Location Permission is denied.'),
                   onTap: () async {
                     if (await Permission.location.request().isGranted) {
-                      // Either the permission was already granted before or the user just granted it.
-                      print("Location Permission is granted");
+                      location = true;
                     } else {
-                      print("Location Permission is denied.");
+                      location = false;
                     }
                   },
                 ),
                 ListTile(
                   // leading: const Icon(Icons.exit_to_app),
                   title: const Text('Notification'),
+                  subtitle: notification
+                      ? const Text('Notification Permission is granted')
+                      : const Text('Notification Permission is denied'),
                   onTap: () async {
                     if (await Permission.notification.request().isGranted) {
-                      // Either the permission was already granted before or the user just granted it.
-                      print("Location Permission is granted");
+                      notification = true;
                     } else {
-                      print("Location Permission is denied.");
+                      notification = false;
                     }
                   },
                 ),
@@ -178,31 +190,31 @@ class _SettingsPageState extends State<SettingsPage> {
                 //         });
                 //       }),
                 // ),
-                const Divider(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text("Permission", style: headingStyle),
-                  ],
-                ),
-                ListTile(
-                  leading: const Icon(Icons.fingerprint),
-                  title: const Text("Use fingerprint"),
-                  trailing: Switch(
-                      value: fingerprintSwitchVal,
-                      activeColor: Colors.redAccent,
-                      onChanged: (val) {
-                        setState(() {
-                          fingerprintSwitchVal = val;
-                        });
-                      }),
-                ),
-                const Divider(),
-                ListTile(
-                    leading: const Icon(Icons.lock),
-                    title: const Text("Change App Password"),
-                    onTap: () async {}),
-                const Divider(),
+                // const Divider(),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.start,
+                //   children: [
+                //     Text("Permission", style: headingStyle),
+                //   ],
+                // ),
+                // ListTile(
+                //   leading: const Icon(Icons.fingerprint),
+                //   title: const Text("Use fingerprint"),
+                //   trailing: Switch(
+                //       value: fingerprintSwitchVal,
+                //       activeColor: Colors.redAccent,
+                //       onChanged: (val) {
+                //         setState(() {
+                //           fingerprintSwitchVal = val;
+                //         });
+                //       }),
+                // ),
+                // const Divider(),
+                // ListTile(
+                //     leading: const Icon(Icons.lock),
+                //     title: const Text("Change App Password"),
+                //     onTap: () async {}),
+                // const Divider(),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -256,17 +268,6 @@ class _SettingsPageState extends State<SettingsPage> {
         subtitle: Text('${'lang.localeFlag'.tr}  ${'lang.localeName'.tr}  '),
         onTap: () => Globals.buildLanguageDialog(context),
       ),
-      // ListTile(
-      //   title: Text('settings.language'.tr),
-      //   trailing: DropdownPicker(
-      //     menuOptions: Globals.languageOptions,
-      //     selectedOption: controller.currentLanguage,
-      //     onChanged: (value) async {
-      //       await controller.updateLanguage(value!);
-      //       Get.forceAppUpdate();
-      //     },
-      //   ),
-      // ),
     );
   }
 }

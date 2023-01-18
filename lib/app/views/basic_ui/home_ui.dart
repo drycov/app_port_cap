@@ -2,11 +2,13 @@
 
 import 'dart:convert';
 
+import 'package:app_port_cap/app/auxiliary/auxiliary.dart';
+import 'package:app_port_cap/app/controllers/index.dart';
 import 'package:app_port_cap/app/models/index.dart';
 import 'package:app_port_cap/app/resources/app_colors.dart';
 import 'package:app_port_cap/app/widgets/index.dart';
 import 'package:app_port_cap/app/widgets/main_menu/grid_dashboard.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -25,47 +27,68 @@ class _HomeUi extends State<HomeUi> {
   late final UserModel userData;
   String messageTitle = "Empty";
   String notificationAlert = "alert";
+  final AuthController controller = AuthController.to;
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   Items item1 = Items(
-      title: "Network structure",
-      subtitle: "Network structure on site",
+      title: "home.menu.title.networkStructure".tr,
+      subtitle: "home.menu.subtitle.networkStructure".tr,
       event: "95 devices",
       img: Icons.group_work_rounded,
-      onTap: () => print("Network structure"),
+      onTap: () => {
+            Get.toNamed('/ns')
+            // print("Network structure"),
+            // toastmessage('Network structure', TTCCorpColors.ForestGreen)
+          },
       cardColor: TTCCorpColors.Apple);
   Items item2 = Items(
-      title: "Line structure",
-      subtitle: " ",
+      title: "home.menu.title.lineStructure".tr,
+      subtitle: "home.menu.subtitle.lineStructure".tr,
       event: " ",
       img: Icons.polyline_outlined,
-      onTap: () => print("Line structure"),
+      onTap: () => {
+            print("Line structure"),
+            toastmessage('Line structure', TTCCorpColors.ForestGreen)
+          },
       cardColor: TTCCorpColors.Apple);
   Items item3 = Items(
-      title: "Locations",
-      subtitle: "Location devices on map",
+      title: "home.menu.title.location".tr,
+      subtitle: "home.menu.subtitle.location".tr,
       event: "",
-      onTap: () => print("Locations"),
+      onTap: () => {
+            print("Locations"),
+            toastmessage('Locations', TTCCorpColors.ForestGreen)
+          },
       img: Icons.location_on_outlined,
       cardColor: TTCCorpColors.Apple);
   Items item4 = Items(
-      title: "Documents",
-      subtitle: "",
+      title: "home.menu.title.documents".tr,
+      subtitle: 'home.menu.subtitle.documents'.tr,
       event: "",
-      onTap: () => print("Documents"),
+      onTap: () => {
+            print("Documents"),
+            toastmessage('Documents', TTCCorpColors.ForestGreen)
+          },
       img: Icons.description_outlined,
       cardColor: TTCCorpColors.Apple);
   Items item5 = Items(
-      title: "Port Capacity",
-      subtitle: " ",
+      title: "home.menu.title.portCapacity".tr,
+      subtitle: 'home.menu.subtitle.portCapacity'.tr,
       event: " ",
-      onTap: () => print("Port Capacity"),
+      onTap: () => {
+            print("Port Capacity"),
+            toastmessage('Port Capacity', TTCCorpColors.ForestGreen)
+          },
       img: Icons.settings_input_hdmi_outlined,
       cardColor: TTCCorpColors.Apple);
   Items item6 = Items(
-      title: "Employers",
-      subtitle: "",
+      title: "home.menu.title.employers".tr,
+      subtitle: 'home.menu.subtitle.employers'.tr,
       event: " ",
-      onTap: () => print("Employers"),
+      onTap: () => {
+            print("Employers"),
+            toastmessage('Employers', TTCCorpColors.ForestGreen)
+          },
       img: Icons.reduce_capacity_outlined,
       cardColor: TTCCorpColors.Apple);
 
@@ -74,10 +97,11 @@ class _HomeUi extends State<HomeUi> {
   @override
   void initState() {
     super.initState();
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      RemoteNotification? notification = message.notification;
-      AndroidNotification? android = message.notification?.android;
-    });
+    NotificationApi.init();
+    // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    //   RemoteNotification? notification = message.notification;
+    //   AndroidNotification? android = message.notification?.android;
+    // });
 
     final datastore = GetStorage();
 
@@ -128,6 +152,18 @@ class _HomeUi extends State<HomeUi> {
           _createDrawerItem(
             icon: Icons.event,
             text: 'Events',
+            onTap: () async {
+              await _db
+                  .collection('users')
+                  .doc(userData.uid)
+                  .get()
+                  .then((documentSnapshot) => {
+                        Globals.printMet('USer', documentSnapshot.data()),
+                        UserModel.fromMap(documentSnapshot.data()!),
+                        UserModel().copy()
+                      });
+              Globals.printMet('isAdmin', UserModel().toJson());
+            },
           ),
           _createDrawerItem(
             icon: Icons.note,
@@ -221,10 +257,10 @@ class _HomeUi extends State<HomeUi> {
             right: 16,
             top: 48,
           ),
-          const Positioned(
+          Positioned(
             child: Text(
-              'Oskementranstelecom',
-              style: TextStyle(color: TTCCorpColors.White),
+              userData.cn.toString(),
+              style: const TextStyle(color: TTCCorpColors.White),
             ),
             right: 16,
             top: 64,
@@ -261,7 +297,7 @@ class _HomeUi extends State<HomeUi> {
                         height: 8,
                       ),
                       Text(
-                        "OskemenTranstelecom",
+                        userData.cn.toString(),
                         style: GoogleFonts.openSans(
                           textStyle: const TextStyle(
                               color: TTCCorpColors.White,
@@ -271,7 +307,7 @@ class _HomeUi extends State<HomeUi> {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        "Serebryansk",
+                        userData.region.toString(),
                         style: GoogleFonts.openSans(
                           textStyle: const TextStyle(
                               color: TTCCorpColors.White,

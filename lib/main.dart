@@ -36,7 +36,6 @@ Future<void> main() async {
   await FirebaseAppCheck.instance.activate(
     webRecaptchaSiteKey: 'recaptcha-v3-site-key',
   );
-  await NotificationApi().init();
 
   PlatformDispatcher.instance.onError = (error, stack) {
     FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
@@ -65,6 +64,8 @@ Future<void> _messageHandler(RemoteMessage message) async {
 
 Future<void> init() async {
   // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
+  await NotificationApi.init();
+
   SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(statusBarColor: GlobalColors.transparent));
   SystemChrome.setPreferredOrientations(

@@ -1,3 +1,4 @@
+import 'package:app_port_cap/app/views/network_structure/json_ns.dart';
 import 'package:app_port_cap/app/views/views.dart';
 import 'package:get/get.dart';
 
@@ -12,7 +13,7 @@ class AppRoutes {
     GetPage(name: '/settings', page: () => const SettingsPage()),
     // GetPage(name: '/reset-password', page: () => ResetPasswordUI()),
     GetPage(name: '/profile', page: () => const ProfilePage()),
-    // GetPage(name: '/qrview', page: () => const UIQRView()),
+    GetPage(name: '/ns', page: () => const LayerGraphPageFromJson()),
     // GetPage(name: '/object', page: () => const ObjectUi()),
     // GetPage(name: '/report', page: () => const ChatScreen()),
     // GetPage(name: '/timeline', page: () => const TimelineUI()),

@@ -2,10 +2,10 @@ import 'package:app_port_cap/app/resources/resources.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-void toastmessage(String msg) {
+void toastmessage(String msg, Color color) {
   Fluttertoast.showToast(
     msg: msg,
-    backgroundColor: Colors.red,
+    backgroundColor: color,
     textColor: Colors.white,
     fontSize: 16,
     gravity: ToastGravity.BOTTOM,
