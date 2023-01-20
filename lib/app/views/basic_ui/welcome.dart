@@ -14,21 +14,21 @@ class SplashUI extends StatefulWidget {
 }
 
 class _SplashUIState extends State<SplashUI> {
-  late FlameSplashController controller;
+  // late FlameSplashController controller;
 
   @override
   void initState() {
     super.initState();
-    controller = FlameSplashController(
-        fadeInDuration: const Duration(seconds: 1),
-        fadeOutDuration: const Duration(milliseconds: 250),
-        waitDuration: const Duration(seconds: 2),
-        autoStart: true);
+    // controller = FlameSplashController(
+    //     fadeInDuration: const Duration(seconds: 1),
+    //     fadeOutDuration: const Duration(milliseconds: 250),
+    //     waitDuration: const Duration(seconds: 2),
+    //     autoStart: true);
   }
 
   @override
   void dispose() {
-    controller.dispose(); // dispose it when necessary
+    // controller.dispose(); // dispose it when necessary
     super.dispose();
   }
 
@@ -45,17 +45,17 @@ class _SplashUIState extends State<SplashUI> {
   void checkSignedIn() async {
     bool isLoggedIn = await this.isLoggedIn();
     if (isLoggedIn) {
-      Get.offNamed('/home');
+      Get.offAllNamed('/home');
       return;
     }
-    Get.offNamed('/auth');
+    Get.offAllNamed('/auth');
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: FlameSplashScreen(
-        controller: controller,
+        // controller: controller,
         onFinish: (context) => checkSignedIn(),
         theme: FlameSplashTheme.white,
       ),

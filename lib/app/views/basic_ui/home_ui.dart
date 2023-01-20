@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, unused_local_variable, non_constant_identifier_names
 
 import 'dart:convert';
 
@@ -9,6 +9,7 @@ import 'package:app_port_cap/app/resources/app_colors.dart';
 import 'package:app_port_cap/app/widgets/index.dart';
 import 'package:app_port_cap/app/widgets/main_menu/grid_dashboard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -92,23 +93,44 @@ class _HomeUi extends State<HomeUi> {
       img: Icons.reduce_capacity_outlined,
       cardColor: TTCCorpColors.Apple);
 
-  // List<Items> myList = [item1, item2, item3, item4, item5, item6];
-
   @override
   void initState() {
     super.initState();
     NotificationApi.init();
-    // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    //   RemoteNotification? notification = message.notification;
-    //   AndroidNotification? android = message.notification?.android;
-    // });
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
+    });
+    _getUserData();
+    // final datastore = GetStorage();
+    // dynamic jsonData = jsonDecode(result);
+  }
 
-    final datastore = GetStorage();
-
+  _getUserData() {
     var result = datastore.read('user');
-    // print(result);
-    dynamic jsonData = jsonDecode(result);
-    userData = UserModel.fromMap(jsonData);
+    Globals.printMet('home ui ds.user', datastore.read('user').toString());
+
+    if (result != null) {
+      dynamic jsonData = jsonDecode(result);
+      userData = UserModel.fromMap(jsonData);
+    } else {
+      var UserAsMap = UserModel(
+        uid: 'NaN',
+        name: 'NaN',
+        email: 'NaN',
+        cn: 'NaN',
+        cndp: 'NaN',
+        region: 'NaN',
+        firstName: 'NaN',
+        lastName: 'NaN',
+        middleName: 'NaN',
+        company_posts: 'NaN',
+        devID: 'NaN',
+      ).toJson();
+      // String jsonString =
+      dynamic jsonData = jsonDecode(jsonEncode(UserAsMap));
+      userData = UserModel.fromMap(jsonData);
+    }
   }
 
   @override
@@ -153,16 +175,11 @@ class _HomeUi extends State<HomeUi> {
             icon: Icons.event,
             text: 'Events',
             onTap: () async {
-              await _db
-                  .collection('users')
-                  .doc(userData.uid)
-                  .get()
-                  .then((documentSnapshot) => {
-                        Globals.printMet('USer', documentSnapshot.data()),
-                        UserModel.fromMap(documentSnapshot.data()!),
-                        UserModel().copy()
-                      });
-              Globals.printMet('isAdmin', UserModel().toJson());
+              DocumentSnapshot adminRef =
+                  await _db.collection('admin').doc(userData.uid).get();
+              datastore.read('admin');
+              Globals.printMet(
+                  datastore.read('admin').toString(), adminRef.exists);
             },
           ),
           _createDrawerItem(
@@ -259,7 +276,7 @@ class _HomeUi extends State<HomeUi> {
           ),
           Positioned(
             child: Text(
-              userData.cn.toString(),
+              '${userData.cndp}',
               style: const TextStyle(color: TTCCorpColors.White),
             ),
             right: 16,
@@ -267,7 +284,7 @@ class _HomeUi extends State<HomeUi> {
           ),
           Positioned(
             child: Text(
-              '${userData.post}',
+              '${userData.company_posts}',
               // controller.firestoreUser.value!.post.toString(),
               style: const TextStyle(color: TTCCorpColors.White),
             ),

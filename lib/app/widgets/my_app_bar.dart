@@ -1,52 +1,44 @@
-import 'package:app_port_cap/app/controllers/index.dart';
 import 'package:app_port_cap/app/resources/resources.dart';
 import 'package:app_port_cap/app/widgets/index.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 PreferredSizeWidget buildAppBar(BuildContext context, String? uName,
     {bool? leadingEnable = true}) {
   String userName = uName!;
+  bool _isVisible = true;
+  final datastore = GetStorage();
+  ((datastore.read('admin') == null) ? datastore.read('admin') : false)
+      ? _isVisible
+      : !_isVisible;
 
-  Widget _buildPopupMenu(BuildContext context) {
-    return PopupMenuButton(
-        offset: const Offset(0, 45),
-        iconSize: 30,
-        itemBuilder: (context) {
-          return [
-            PopupMenuItem<int>(
-              value: 0,
-              child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(userName),
-                    AvatarWidget(
-                      useLetterAvatar: true,
-                      dimension: 32,
-                      userName: userName,
-                    ),
-                  ]),
-            ),
-            PopupMenuItem<int>(
-              value: 1,
-              child: Text('settings.settings.title'.tr),
-            ),
-            PopupMenuItem<int>(
-              value: 2,
-              child: Text('settings.account.label.signOut'.tr),
-            ),
-          ];
-        },
-        onSelected: (value) {
-          if (value == 0) {
-            Get.toNamed("/profile");
-          } else if (value == 1) {
-            Get.toNamed('/settings');
-          } else if (value == 2) {
-            AuthController().signOut();
-          }
-        });
+  _buildActionMenu(context) {
+    return [
+      Visibility(
+        visible: (datastore.read('admin') != null)
+            ? ((datastore.read('admin')) ? _isVisible : !_isVisible)
+            : false,
+        child: IconButton(
+            onPressed: () => {_isVisible = !_isVisible},
+            icon: Icon(Icons.admin_panel_settings_outlined)),
+      ),
+
+      Visibility(
+        visible: (Get.currentRoute != '/profile') ? _isVisible : !_isVisible,
+        child: IconButton(
+            onPressed: () => Get.toNamed("/profile"),
+            icon: Icon(Icons.person_outlined)),
+      ),
+      Visibility(
+        visible: (Get.currentRoute != '/settings') ? _isVisible : !_isVisible,
+        child: IconButton(
+            onPressed: () => Get.toNamed('/settings'),
+            icon: Icon(Icons.settings_outlined)),
+      ),
+
+      // _buildPopupMenu(context)
+    ];
   }
 
   if (!leadingEnable!) {
@@ -54,8 +46,13 @@ PreferredSizeWidget buildAppBar(BuildContext context, String? uName,
       iconTheme: const IconThemeData(color: TTCCorpColors.White), //
       actionsIconTheme: const IconThemeData(),
       // elevation: 0,
-      backgroundColor: TTCCorpColors.Salem,
-      actions: [_buildPopupMenu(context)],
+      backgroundColor: (datastore.read('admin') != null)
+          ? ((datastore.read('admin'))
+              ? TTCCorpColors.Red
+              : TTCCorpColors.Salem)
+          : TTCCorpColors.Salem,
+
+      actions: _buildActionMenu(context),
     );
   } else {
     return AppBar(
@@ -67,8 +64,12 @@ PreferredSizeWidget buildAppBar(BuildContext context, String? uName,
           onPressed: () {
             Get.back();
           }),
-      backgroundColor: TTCCorpColors.Salem,
-      actions: [_buildPopupMenu(context)],
+      backgroundColor: (datastore.read('admin') != null)
+          ? ((datastore.read('admin'))
+              ? TTCCorpColors.Red
+              : TTCCorpColors.Salem)
+          : TTCCorpColors.Salem,
+      actions: _buildActionMenu(context),
     );
   }
 }

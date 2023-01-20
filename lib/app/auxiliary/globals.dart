@@ -77,12 +77,40 @@ class Globals {
   }
 
   Future<void> saveTokenToDatabase(String token) async {
+    User? user = FirebaseAuth.instance.currentUser!;
+    String deviceId = await Globals.getDeviceId();
+    var UserAsMap = UserModel(
+      uid: user.uid,
+      name: user.email.toString().replaceAll(RegExp('@(\\w+.+)'), ""),
+      email: user.email.toString(),
+      cn: 'ttc-0',
+      cndp: 'ca',
+      region: 'region-0-0',
+      firstName: 'NaN',
+      lastName: 'NaN',
+      middleName: 'NaN',
+      company_posts: 'ca_1',
+      devID: deviceId,
+    ).toJson();
     // Assume user is logged in for this example
     String userId = FirebaseAuth.instance.currentUser!.uid;
+    final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-    await FirebaseFirestore.instance.collection('users').doc(userId).update({
-      'tokens': FieldValue.arrayUnion([token]),
-    });
+    CollectionReference usersCollRef = _db.collection('users');
+    DocumentSnapshot usersRef = await usersCollRef.doc(userId).get();
+    if (usersRef.exists) {
+      await FirebaseFirestore.instance.collection('users').doc(userId).update({
+        'tokens': FieldValue.arrayUnion([token]),
+      });
+    } else {
+      usersCollRef.doc(userId).set({
+        'tokens': FieldValue.arrayUnion([token]),
+      }).catchError((error) => print("Failed to add user: $error"));
+      usersCollRef
+          .doc(userId)
+          .update(UserAsMap)
+          .catchError((error) => print("Failed to add user: $error"));
+    }
   }
 
   static void buildLanguageDialog(BuildContext context) {

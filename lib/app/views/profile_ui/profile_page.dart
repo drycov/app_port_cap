@@ -160,7 +160,7 @@ class _ProfilePageState extends State<ProfilePage> {
               style: const TextStyle(color: TTCCorpColors.Black, fontSize: 16),
             ),
             Text(
-              userData.post.toString(),
+              userData.company_posts.toString(),
               style: const TextStyle(color: TTCCorpColors.Black, fontSize: 16),
             ),
           ],

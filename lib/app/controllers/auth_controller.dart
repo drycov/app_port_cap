@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:app_port_cap/app/auxiliary/auxiliary.dart';
 import 'package:app_port_cap/app/models/index.dart';
+import 'package:app_port_cap/app/queryes/query.dart';
 import 'package:app_port_cap/app/resources/app_colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -15,8 +16,9 @@ import 'package:get_storage/get_storage.dart';
 import '../widgets/index.dart';
 
 class AuthController extends GetxController {
-  static AuthController to = Get.find();
   final datastore = GetStorage();
+
+  static AuthController to = Get.find();
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   Rxn<User> firebaseUser = Rxn<User>();
   Rxn<UserModel> firestoreUser = Rxn<UserModel>();
@@ -27,7 +29,7 @@ class AuthController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   Future<User> get getUser async => _auth.currentUser!;
   Stream<User?> get user => _auth.authStateChanges();
-  final RxBool admin = false.obs;
+  // final RxBool admin = false.obs;
 
   @override
   void onReady() async {
@@ -51,23 +53,33 @@ class AuthController extends GetxController {
       await isAdmin();
     }
 
-    if (_firebaseUser == null) {
-      Get.toNamed("/auth");
+    if (_firebaseUser == null && datastore.read('user') == null) {
+      Get.offAllNamed("/auth");
     } else {
-      Get.toNamed('/home');
+      setupToken();
+      Get.offAllNamed('/home');
     }
   }
 
   isAdmin() async {
     await getUser.then((user) async {
-      DocumentSnapshot adminRef =
-          await _db.collection('admin').doc(user.uid).get();
+      CollectionReference adminCollRef = _db.collection('admin');
+      DocumentSnapshot adminRef = await adminCollRef.doc(user.uid).get();
       if (adminRef.exists) {
-        admin.value = true;
+        // admin.value = true;
+        datastore.write('admin', true);
       } else {
-        admin.value = false;
+        adminCollRef
+            .doc(user.uid)
+            .set({
+              'admin': false,
+            })
+            .then((value) => print("User Added"))
+            .catchError((error) => print("Failed to add user: $error"));
+        // admin.value = false;
+        datastore.write('admin', false);
       }
-      update();
+      // update();
     });
   }
 
@@ -85,43 +97,48 @@ class AuthController extends GetxController {
   }
 
   Future<void> signInWithEmailAndPassword(BuildContext context) async {
+    showLoadingIndicator();
     try {
       final credential = await _auth.signInWithEmailAndPassword(
           email: emailController.text.trim(),
           password: passwordController.text.trim());
       // Globals.printMet(credential);
       if (credential.user?.uid != null) {
-        await getFirestoreUser();
-        Globals.printMet('um', UserModel);
+        UserModel uModel = await getFirestoreUser();
+        Globals.printMet('um', uModel.toJson());
         String? email = credential.user?.email;
         String deviceId = await Globals.getDeviceId();
-        var UserAsMap = UserModel(
-          uid: credential.user?.uid,
-          name: email.toString().replaceAll(RegExp('@(\\w+.+)'), ""),
-          cn: 'Оскементранстелеком',
-          region: 'Серебрянск (Кумыстау)',
-          post: 'Инженер сети',
-          firstName: 'Денис',
-          lastName: 'Рыков',
-          middleName: 'Игорьевич',
-          email: email,
-          devID: deviceId.toString(),
-        ).toJson();
-        String jsonString = jsonEncode(UserAsMap);
-        if (datastore.read('user') != null) {
-          datastore.write('user', jsonString);
-        } else {
-          datastore.write('user', jsonString);
-        }
-        datastore.write('isAuthenticated', true);
-        setupToken();
+        CNModel cnModel = await FRBQuery().getUserCN(uModel.cn.toString());
+        RegionModel rModel =
+            await FRBQuery().getUserRegion(uModel.region.toString());
+        CompanyPostsModel cpModel =
+            await FRBQuery().getUserCP(uModel.company_posts.toString());
+        CompanyDeportamentsModel cndpModel =
+            await FRBQuery().getUserCnD(cpModel.cn_index.toString());
 
+        datastore.write(
+            'user',
+            jsonEncode(UserModel(
+              uid: credential.user?.uid,
+              name: email.toString().replaceAll(RegExp('@(\\w+.+)'), ""),
+              email: uModel.email.toString(),
+              cn: cnModel.name.toString(),
+              cndp: cndpModel.name.toString(),
+              region: rModel.name.toString(),
+              firstName: uModel.firstName.toString(),
+              lastName: uModel.lastName.toString(),
+              middleName: uModel.middleName.toString(),
+              company_posts: cpModel.name.toString(),
+              devID: deviceId.toString(),
+            ).toJson()));
+        datastore.write('isAuthenticated', true);
         emailController.clear();
         passwordController.clear();
+        hideLoadingIndicator();
         onReady();
-        // Get.toNamed('/home');
       }
     } on FirebaseAuthException catch (e) {
+      hideLoadingIndicator();
       if (e.code == 'user-not-found') {
         toastmessage('msg.error.text.nouser'.tr, TTCCorpColors.Red);
         print('No user found for that email.');
@@ -140,11 +157,13 @@ class AuthController extends GetxController {
 
   // Sign out
   Future<void> signOut() {
+    final datastore = GetStorage();
     emailController.clear();
     passwordController.clear();
     datastore.remove('user');
+    datastore.write('admin', false);
     datastore.write('isAuthenticated', false);
-    Get.offNamed('/');
+    Get.offAllNamed('/auth');
     return _auth.signOut();
   }
 
