@@ -91,7 +91,9 @@ class AuthController extends GetxController {
         .map((snapshot) => UserModel.fromMap(snapshot.data()!));
   }
 
-  Future<UserModel> getFirestoreUser() {
+  Future<UserModel> getFirestoreUser() async {
+    await FirebaseFirestore.instance.disableNetwork();
+    await FirebaseFirestore.instance.enableNetwork();
     return _db.doc('/users/${firebaseUser.value!.uid}').get().then(
         (documentSnapshot) => UserModel.fromMap(documentSnapshot.data()!));
   }

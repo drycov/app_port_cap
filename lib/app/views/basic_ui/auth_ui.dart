@@ -4,6 +4,8 @@ import 'package:app_port_cap/app/auxiliary/auxiliary.dart';
 import 'package:app_port_cap/app/controllers/index.dart';
 import 'package:app_port_cap/app/resources/app_colors.dart';
 import 'package:app_port_cap/app/system/index.dart';
+import 'package:connectivity_wrapper/connectivity_wrapper.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -152,11 +154,6 @@ class _AuthUI extends State<AuthUI> with SingleTickerProviderStateMixin {
                   TTCCorpColors.Lima,
                   TTCCorpColors.Sushi,
                 ],
-                // colors: [
-                //   Colors.green.shade900,
-                //   Colors.green,
-                //   Colors.green.shade400,
-                // ],
                 begin: Alignment.topLeft,
                 end: Alignment.centerRight,
               ),
@@ -236,17 +233,46 @@ class _AuthUI extends State<AuthUI> with SingleTickerProviderStateMixin {
             child: _form,
           ),
           const SizedBox(height: 35),
-          MaterialButton(
-            onPressed: _sendToServer,
-            height: 45,
-            minWidth: 240,
-            child: Text(
-              'auth.signIn.label'.tr,
-              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+          ConnectivityWidgetWrapper(
+            disableInteraction: true,
+            stacked: false,
+            offlineWidget: MaterialButton(
+              onPressed: null,
+              color: Colors.green.shade700,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  // ignore: prefer_const_literals_to_create_immutables
+                  children: <Widget>[
+                    const Text(
+                      "Connecting",
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(height: 60),
+                    const CupertinoActivityIndicator(
+                      radius: 8.0,
+                      color: Colors.white,
+                    ),
+                  ],
+                ),
+              ),
             ),
-            textColor: Colors.white,
-            color: Colors.green.shade700,
-            shape: const StadiumBorder(),
+            child: MaterialButton(
+              onPressed: _sendToServer,
+              height: 45,
+              minWidth: 240,
+              child: Text(
+                'auth.signIn.label'.tr,
+                style:
+                    const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              ),
+              textColor: Colors.white,
+              color: Colors.green.shade700,
+              shape: const StadiumBorder(),
+            ),
           ),
           _footer
         ],
@@ -316,7 +342,6 @@ class _AuthUI extends State<AuthUI> with SingleTickerProviderStateMixin {
                     color: Colors.cyan),
                 recognizer: TapGestureRecognizer()
                   ..onTap = () {
-                    print('Hash tag #tag');
                     fireToast2("${'msg.info.TandC'.tr} Hash Tag");
                   }),
             TextSpan(text: 'msg.info.and'.tr),
@@ -328,7 +353,6 @@ class _AuthUI extends State<AuthUI> with SingleTickerProviderStateMixin {
                     color: Colors.cyan),
                 recognizer: TapGestureRecognizer()
                   ..onTap = () {
-                    print('Hash tag #tag');
                     fireToast2("${'msg.info.privacy'.tr} Hash Tag");
                   }),
           ],
@@ -337,14 +361,8 @@ class _AuthUI extends State<AuthUI> with SingleTickerProviderStateMixin {
     );
   }
 
-  _sendToServer() {
-    if (true) {
-      /// No any error in validation
-      // _key.currentState!.save();
-      print("Email ${authController.emailController.text.trim()}");
-      print("Password ${authController.passwordController.text.trim()}");
-      authController.signInWithEmailAndPassword(context);
-    }
+  _sendToServer() async {
+    authController.signInWithEmailAndPassword(context);
   }
 }
 

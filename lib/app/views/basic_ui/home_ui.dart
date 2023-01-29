@@ -9,7 +9,7 @@ import 'package:app_port_cap/app/resources/app_colors.dart';
 import 'package:app_port_cap/app/widgets/index.dart';
 import 'package:app_port_cap/app/widgets/main_menu/grid_dashboard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:connectivity_wrapper/connectivity_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -37,9 +37,9 @@ class _HomeUi extends State<HomeUi> {
       event: "95 devices",
       img: Icons.group_work_rounded,
       onTap: () => {
-            Get.toNamed('/ns')
+            // Get.toNamed('')
             // print("Network structure"),
-            // toastmessage('Network structure', TTCCorpColors.ForestGreen)
+            toastmessage('Network structure', TTCCorpColors.ForestGreen)
           },
       cardColor: TTCCorpColors.Apple);
   Items item2 = Items(
@@ -48,7 +48,8 @@ class _HomeUi extends State<HomeUi> {
       event: " ",
       img: Icons.polyline_outlined,
       onTap: () => {
-            print("Line structure"),
+            // print("Line structure"),
+            Get.toNamed('/linetracker'),
             toastmessage('Line structure', TTCCorpColors.ForestGreen)
           },
       cardColor: TTCCorpColors.Apple);
@@ -94,16 +95,10 @@ class _HomeUi extends State<HomeUi> {
       cardColor: TTCCorpColors.Apple);
 
   @override
-  void initState() {
+  initState() {
     super.initState();
-    NotificationApi.init();
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      RemoteNotification? notification = message.notification;
-      AndroidNotification? android = message.notification?.android;
-    });
+
     _getUserData();
-    // final datastore = GetStorage();
-    // dynamic jsonData = jsonDecode(result);
   }
 
   _getUserData() {
@@ -141,18 +136,20 @@ class _HomeUi extends State<HomeUi> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        backgroundColor: TTCCorpColors.Gray,
-        // bottomNavigationBar: const CustomNavigationBar(),
-        // bottomNavigationBar: BottomNavigationBar(items: []),
-        drawer: _buildDraver(context),
+      child: ConnectivityWidgetWrapper(
+        disableInteraction: true,
+        height: 80,
+        child: Scaffold(
+          backgroundColor: TTCCorpColors.Gray,
+          drawer: _buildDraver(context),
 
-        //! change user name
-        appBar: buildAppBar(context, userData.name, leadingEnable: false),
-        // ===================== BODY ========================== //
-        body: Padding(
-            padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
-            child: _createHomeMenu(context)),
+          //! change user name
+          appBar: buildAppBar(context, userData.name, leadingEnable: false),
+          // ===================== BODY ========================== //
+          body: Padding(
+              padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
+              child: _createHomeMenu(context)),
+        ),
       ),
     );
   }

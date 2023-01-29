@@ -1,16 +1,16 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, non_constant_identifier_names
 
-import 'dart:io';
+import 'package:android_id/android_id.dart';
 
 import 'package:app_port_cap/app/models/index.dart';
 import 'package:app_port_cap/app/resources/resources.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:android_id/android_id.dart';
 
 import '../system/index.dart';
 
@@ -60,15 +60,22 @@ class Globals {
   static Future<String> getDeviceId() async {
     var deviceInfo = DeviceInfoPlugin();
     late String deviceId;
-
-    if (Platform.isIOS) {
+    if (defaultTargetPlatform == TargetPlatform.iOS) {
       var iosDeviceInfo = await deviceInfo.iosInfo;
       deviceId = iosDeviceInfo.identifierForVendor!;
-    } else if (Platform.isAndroid) {
+    } else if (defaultTargetPlatform == TargetPlatform.android) {
       deviceId = await _androidIdPlugin.getId() ?? 'Unknown ID';
     } else {
       deviceId = 'null';
     }
+    // if (Platform.isIOS) {
+    //   var iosDeviceInfo = await deviceInfo.iosInfo;
+    //   deviceId = iosDeviceInfo.identifierForVendor!;
+    // } else if (Platform.isAndroid) {
+    //   deviceId = await _androidIdPlugin.getId() ?? 'Unknown ID';
+    // } else {
+    //   deviceId = 'null';
+    // }
     return deviceId;
   }
 

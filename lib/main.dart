@@ -6,11 +6,11 @@ import 'package:app_port_cap/app/controllers/index.dart';
 import 'package:app_port_cap/app/resources/resources.dart';
 import 'package:app_port_cap/app/system/index.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connectivity_wrapper/connectivity_wrapper.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // For rootBundle
@@ -29,19 +29,23 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   FirebaseFirestore.instance.settings = const Settings(
-      persistenceEnabled: false, cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED);
-  FlutterError.onError = (errorDetails) {
-    FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
-  };
+      persistenceEnabled: false,
+      sslEnabled: false,
+      cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED);
+  // FirebaseFirestore.instance.disableNetwork();
+
+  if (!kIsWeb) {
+    FlutterError.onError = (errorDetails) {
+      FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+    };
+    PlatformDispatcher.instance.onError = (error, stack) {
+      FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+      return true;
+    };
+  }
   await FirebaseAppCheck.instance.activate(
     webRecaptchaSiteKey: 'recaptcha-v3-site-key',
   );
-
-  PlatformDispatcher.instance.onError = (error, stack) {
-    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-    return true;
-  };
-
   await GetStorage.init();
   await init();
   await writeDeviceId();
@@ -49,7 +53,6 @@ Future<void> main() async {
       await rootBundle.loadString('assets/themes/appainter_theme.json');
   final themeJson = jsonDecode(themeStr);
   final theme = ThemeDecoder.decodeThemeData(themeJson)!;
-  FirebaseMessaging.onBackgroundMessage(_messageHandler);
 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -58,13 +61,8 @@ Future<void> main() async {
   });
 }
 
-Future<void> _messageHandler(RemoteMessage message) async {
-  print('background message ${message.notification!.body}');
-}
-
 Future<void> init() async {
   // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
-  await NotificationApi.init();
 
   SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(statusBarColor: GlobalColors.transparent));
@@ -72,8 +70,6 @@ Future<void> init() async {
       [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
   Get.put<AuthController>(AuthController());
   Get.put<LanguageController>(LanguageController());
-
-  // Get.put<ThemeController>(ThemeController());
 }
 
 Future<void> writeDeviceId() async {
@@ -98,19 +94,21 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // ThemeController.to.getThemeModeFromStore();
 
-    return GetBuilder<LanguageController>(
-      builder: (languageController) => Loading(
-        child: GetMaterialApp(
-            debugShowCheckedModeBanner: false,
-            translations: LocaleString(),
-            locale: languageController.getLocale,
-            navigatorObservers: [observer],
-            defaultTransition: Transition.fade,
-            title: 'TTC Network Capacity',
-            theme: theme,
-            unknownRoute: GetPage(name: '/', page: () => const SplashUI()),
-            initialRoute: "/",
-            getPages: AppRoutes.routes),
+    return ConnectivityAppWrapper(
+      app: GetBuilder<LanguageController>(
+        builder: (languageController) => Loading(
+          child: GetMaterialApp(
+              debugShowCheckedModeBanner: false,
+              translations: LocaleString(),
+              locale: languageController.getLocale,
+              navigatorObservers: [observer],
+              defaultTransition: Transition.fade,
+              title: 'TTC Network Capacity',
+              theme: theme,
+              unknownRoute: GetPage(name: '/', page: () => const SplashUI()),
+              initialRoute: "/",
+              getPages: AppRoutes.routes),
+        ),
       ),
     );
   }

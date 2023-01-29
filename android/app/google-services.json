@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "649507476750-qj4ced42sa205m3g8qkf8kkjhs7lq44c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "kz.oritorius.appPortCap",
+            "certificate_hash": "a6745b02bf46a694dbd65dde22056cff1285c26f"
+          }
+        },
+        {
           "client_id": "649507476750-es4fmbak4672l7qh9m17hr0mgpkdshaj.apps.googleusercontent.com",
           "client_type": 3
         }

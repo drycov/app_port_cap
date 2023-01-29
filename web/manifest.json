@@ -1,6 +1,6 @@
 {
-    "name": "untitled",
-    "short_name": "untitled",
+    "name": "TTC Network Capacity",
+    "short_name": "app_port_cap",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

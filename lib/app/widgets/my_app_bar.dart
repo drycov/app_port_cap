@@ -1,12 +1,10 @@
 import 'package:app_port_cap/app/resources/resources.dart';
-import 'package:app_port_cap/app/widgets/index.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 PreferredSizeWidget buildAppBar(BuildContext context, String? uName,
     {bool? leadingEnable = true}) {
-  String userName = uName!;
   bool _isVisible = true;
   final datastore = GetStorage();
   ((datastore.read('admin') == null) ? datastore.read('admin') : false)
@@ -21,20 +19,20 @@ PreferredSizeWidget buildAppBar(BuildContext context, String? uName,
             : false,
         child: IconButton(
             onPressed: () => {_isVisible = !_isVisible},
-            icon: Icon(Icons.admin_panel_settings_outlined)),
+            icon: const Icon(Icons.admin_panel_settings_outlined)),
       ),
 
       Visibility(
         visible: (Get.currentRoute != '/profile') ? _isVisible : !_isVisible,
         child: IconButton(
             onPressed: () => Get.toNamed("/profile"),
-            icon: Icon(Icons.person_outlined)),
+            icon: const Icon(Icons.person_outlined)),
       ),
       Visibility(
         visible: (Get.currentRoute != '/settings') ? _isVisible : !_isVisible,
         child: IconButton(
             onPressed: () => Get.toNamed('/settings'),
-            icon: Icon(Icons.settings_outlined)),
+            icon: const Icon(Icons.settings_outlined)),
       ),
 
       // _buildPopupMenu(context)

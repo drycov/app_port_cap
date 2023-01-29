@@ -47,7 +47,7 @@ dependencies:
   flame_splash_screen: ^0.1.0
   graphview: ^1.1.1
   dropdown_button2: ^1.9.2
-  modal_bottom_sheet: ^2.1.2
+  connectivity_wrapper: ^1.1.1
 
 dev_dependencies:
   flutter_test:
